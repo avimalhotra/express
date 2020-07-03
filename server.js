@@ -1,7 +1,9 @@
 const express=require('express');
 
-
 const app=express();
+
+const admin=require('./admin');
+const user=require('./user');
 
 app.use(express.static('src/public'))
 
@@ -18,11 +20,17 @@ app.use(express.static('src/public'))
 // })
 
 app.get('/',(req,res)=>{
-    //res.redirect('index.html');
-    //res.status(200).send("<h1>root page</h1>")
-    res.send("hello app");
+    res.redirect('index.html');
+    //res.status(200).send("<h1>root page</h1>");
+    //res.send("hi Express APp");
    
 });
+
+// routes
+
+app.use('/admin',admin);
+app.use('/user',user);
+
 
 app.post('/post',(req,res)=>{
     //res.status(200).send("POST data")
@@ -30,10 +38,7 @@ app.post('/post',(req,res)=>{
     res.send(req.query);
 })
 
-app.get('/admin',(req,res)=>{
-    //res.status(200).send(req.url)
-    res.status(200).redirect('/admin.html');
-});
+
 app.get('/formdata',(req,res)=>{
     res.status(200).send(req.query) 
 });

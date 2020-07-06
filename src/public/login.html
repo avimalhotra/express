@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Express</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="wrap">
+        <h1>Please Login</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi eveniet voluptate veniam explicabo recusandae consectetur quia. Deserunt dolor, ducimus magnam ullam, quibusdam quis vel mollitia, vero corrupti repellat praesentium numquam.</p>
+        <a href="/admin/logout">Logout</a>
+        <fieldset>
+            <legend>Please Login</legend>
+        <form action="/login" method="POST">
+            <div><label>Email: <input autofocus type="email" required name="email"> </label></div>
+            <div><label>Password: <input type="password" required name="pass"> </label></div>
+            <div>Terms : <label><input type="checkbox" name="chk"> I Agree</label></div>
+            <div> Gender: 
+                <label><input type="radio" name="gender" required value="m"> Male</label>
+                <label><input type="radio" name="gender" required value="f"> Female</label>
+            </div>
+            <div>
+                <input type="text" readonly name="lat">
+                <input type="text" readonly name="lon">
+                <button type="button">Get GPS Location</button>
+            </div>
+            <div><button>Login</button></div>
+        </form>
+        </fieldset>
+    </div>
+  <script src="math.js"></script>  
+</body>
+</html>

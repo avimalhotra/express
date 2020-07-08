@@ -1,13 +1,30 @@
 const express=require('express');
 const bp=require('body-parser');
 const app=express();
+const cookieParser=require('cookie-parser');
+const session=require('express-session');
+const parseurl=require('parseurl');
+
+app.set('trust proxy', 1); 
+app.use(session({
+    secret:"session",
+    resave:false,
+    saveUninitialized:true,
+    cookie:{secure:false}
+}));
+
+
 
 const admin=require('./admin');
 const user=require('./user');
 
+
+app.use(cookieParser());
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: false }));
 app.use(express.static('src/public'))
+
+
 
 // app.use((req,res)=>{
 //     res.status(200);
@@ -16,21 +33,30 @@ app.use(express.static('src/public'))
 //     res.end();
 // });
 
-// app.use((req,res,next)=>{
-//     console.log("app started");  
-//     next()
-// })
-
 app.use((req,res,next)=>{
-    console.log("Session starts at "+ new Date().getTime());
+    
+    if (!req.session.views) { 
+        req.session.views = {}
+      }
+    
+      // get the url pathname
+      var pathname = parseurl(req).pathname
+    
+      // count the views
+      req.session.views[pathname] = (req.session.views[pathname] || 0) + 1; 
+    console.log("Session id: ", req.sessionID, ", views "+ req.session.views['/'] );  
     next()
-});
+})
+
+// app.use((req,res,next)=>{
+//     console.log("Session starts at "+ new Date().getTime());
+//     next()
+// });
 
 app.get('/',(req,res)=>{
-    res.redirect('index.html');
-    //res.status(200).send("<h1>root page</h1>");
+    //res.redirect('index.html');
+    res.status(200).send("<h1>Hello Express</h1>");
     //res.send("hi Express APp");
-   
 });
 
 // routes
@@ -53,6 +79,20 @@ app.post('/login',(req,res)=>{
     
     res.json(req.body);
 });
+
+app.get('/setCookie',(req,res)=>{
+    res.cookie('sesis','avi123456');
+    res.send("cookie saved");
+});
+
+app.get('/getCookie',(req,res)=>{
+    //console.log(req.cookies)
+    res.send(req.cookies);
+
+})
+
+
+
 
 
 app.get('/login',(req,res)=>{

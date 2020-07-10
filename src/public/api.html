@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+   <h1>AJAX API</h1>
+   <ol></ol>
+<p class="loading"></p>
+<script>
+    
+var xhr=new XMLHttpRequest();
+    
+//xhr.open("get","https://techaltum.herokuapp.com/");
+xhr.open("get","http://127.0.0.1:3000/api");
+//xhr.send("name:Jan,id:212");
+xhr.send();
+
+xhr.onreadystatechange=function(){
+    
+    if( this.readyState==0 || this.readyState==1 || this.readyState==2 ||   this.readyState==3){
+        document.querySelector(".loading").innerHTML="loading data";
+    }
+    else if(this.readyState==4 && this.status==200){
+        var  data=this.response;
+        data=JSON.parse(data);
+        //document.querySelector("p").innerHTML= data;
+        data.forEach(function(i){
+            document.querySelector("ol").innerHTML+="<li>"+ i+"</li>";
+        });
+        document.querySelector(".loading").style.display="none"
+    }
+    else{
+        document.querySelector("p").innerHTML="Error Found";
+    }
+}
+</script>
+</body>
+</html>

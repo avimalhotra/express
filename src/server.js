@@ -5,6 +5,8 @@ const cookieParser=require('cookie-parser');
 const session=require('express-session');
 const parseurl=require('parseurl');
 
+
+
 app.set('trust proxy', 1); 
 app.use(session({
     secret:"session",
@@ -17,10 +19,12 @@ app.use(session({
 
 const admin=require('./admin');
 const user=require('./user');
+const { query } = require('express');
 
 
 app.use(cookieParser());
 app.use(bp.json());
+app.use(bp.text());
 app.use(bp.urlencoded({ extended: false }));
 app.use(express.static('src/public'))
 
@@ -33,20 +37,20 @@ app.use(express.static('src/public'))
 //     res.end();
 // });
 
-app.use((req,res,next)=>{
+// app.use((req,res,next)=>{
     
-    if (!req.session.views) { 
-        req.session.views = {}
-      }
+//     if (!req.session.views) { 
+//         req.session.views = {}
+//       }
     
-      // get the url pathname
-      var pathname = parseurl(req).pathname
+//       // get the url pathname
+//       var pathname = parseurl(req).pathname
     
-      // count the views
-      req.session.views[pathname] = (req.session.views[pathname] || 0) + 1; 
-    console.log("Session id: ", req.sessionID, ", views "+ req.session.views['/'] );  
-    next()
-})
+//       // count the views
+//       req.session.views[pathname] = (req.session.views[pathname] || 0) + 1; 
+//     console.log("Session id: ", req.sessionID, ", views "+ req.session.views['/'] );  
+//     next()
+// })
 
 // app.use((req,res,next)=>{
 //     console.log("Session starts at "+ new Date().getTime());
@@ -104,6 +108,14 @@ app.get('/formdata',(req,res)=>{
 app.get('/product/:phone/:model',(req,res)=>{
     res.status(200).send(req.params) 
 });
+        /* API */
+    var days=["sun","mon","tues","wed","thurs","fri","sat"];
+
+    app.get("/api",(req,res)=>{
+        res.header('Access-Control-Allow-Origin',"*");
+        return res.send(days);
+    });
+
 
         /*wildcard handler*/ 
 app.get('/**',(req,res)=>{
